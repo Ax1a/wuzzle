@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'tailwindcss';
+@import 'tailwindcss-animated';
+
+* {
+  @apply box-border p-0 m-0;
+  user-select: none;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+h1,
+h2 {
+  font-family: 'DynaPuff', system-ui;
+}
