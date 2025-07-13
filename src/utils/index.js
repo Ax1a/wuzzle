@@ -6,7 +6,7 @@ let wordListTemp = []
  * @see {@link https://gist.github.com/cfreshman/a03ef2cba789d8cf00c08f767e0fad7b#file-wordle-answers-alphabetical-txt|Original Word List by cfreshman on GitHub}
  */
 export async function fetchWordList(WORD_LENGTH = 5) {
-  const res = await fetch('../assets/word_list.txt')
+  const res = await fetch('/word_list.txt')
   const text = await res.text()
   wordListTemp = text
     .split('\n')
