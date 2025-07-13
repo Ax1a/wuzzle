@@ -5,7 +5,14 @@ export const userDataStore = defineStore('userData', {
   getters: {
     getCorrectAnswers: (state) => state.correctAnswers,
     getCurrentWords: (state) => state.currentWords,
-    getCurrentCorrectAnswer: (state) => state.currentCorrectAnswer
+    getCurrentCorrectAnswer: (state) => {
+      if (!state.encodedAnswer) return null
+      try {
+        return atob(state.encodedAnswer)
+      } catch (e) {
+        return null
+      }
+    }
   },
   actions: {
     addCorrectAnswer(answer) {
@@ -15,7 +22,7 @@ export const userDataStore = defineStore('userData', {
       this.currentWords = words
     },
     setCurrentCorrectAnswer(answer) {
-      this.currentCorrectAnswer = answer
+      this.currentCorrectAnswer = btoa(answer)
     },
     resetCurrentWords() {
       this.currentWords = []

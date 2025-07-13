@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col min-h-screen overflow-x-hidden">
     <Dialog :visible="isDialogVisible" :is-correct="isCorrect" :word="answer" @close="closeDialog" @new-word="getNewWord" />
-    <main class="flex flex-row flex-wrap items-center justify-center flex-grow w-screen h-full gap-3 pt-12 pb-12 sm:gap-5 lg:gap-10 md:py-16">
-      <div class="flex flex-col items-center gap-10 md:gap-14">
+    <main class="flex flex-row flex-wrap items-center justify-center flex-grow w-screen h-full gap-3 py-8 sm:gap-5 lg:gap-10 md:py-16">
+      <div class="flex flex-col items-center gap-5 lg:gap-14">
         <h1 class="text-6xl font-bold text-white">Wuzzle</h1>
         <div class="flex flex-col items-center gap-2">
           <div v-for="(row, rowIndex) in words" :key="rowIndex" class="flex flex-row gap-2">
@@ -148,9 +148,9 @@
     currentRowIndex = 0
     isGameOver = false
     isCorrect.value = false
+    store.resetCurrentWords()
     // Setup words and answer for the new game
     getAnswer()
-
     words.value = buildBoard(NO_OF_TRIES, WORD_LENGTH)
   }
 

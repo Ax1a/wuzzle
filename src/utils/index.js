@@ -46,5 +46,10 @@ export function hasEmptyCells(words, currentRowIndex) {
 
 export function pastGameIsGameOver() {
   const store = userDataStore()
-  return store.getCurrentWords.length > 0 && store.getCurrentWords.find((row) => row.every((cell) => cell.status === 'correct')) !== undefined
+  const currentWords = store.getCurrentWords
+  return (
+    currentWords.length > 0 &&
+    (currentWords.find((row) => row.every((cell) => cell.status === 'correct')) !== undefined ||
+      currentWords[currentWords.length - 1].every((cell) => cell.status !== ''))
+  )
 }
