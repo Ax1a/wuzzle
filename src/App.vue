@@ -45,7 +45,16 @@
   import Alert from './components/Alert.vue'
   import Keyboard from './components/Keyboard.vue'
   import { userDataStore } from './stores/user_data'
-  import { fetchWordList, getRandomWord, buildBoard, mapWordLetters, hasEmptyCells, pastGameIsGameOver, isWordInTheList } from './utils'
+  import {
+    fetchWordList,
+    getRandomWord,
+    buildBoard,
+    mapWordLetters,
+    hasEmptyCells,
+    pastGameIsGameOver,
+    isWordInTheList,
+    filterWordList
+  } from './utils'
   import { onBeforeUnmount, onMounted, ref } from 'vue'
 
   const NO_OF_TRIES = 6
@@ -61,9 +70,11 @@
   let isCorrect = ref(false)
   let isGameOver = false
   let wordList = []
+  let filteredWordList = []
 
   onMounted(async () => {
     wordList = await fetchWordList(WORD_LENGTH)
+    filteredWordList = filterWordList(wordList)
     if (pastGameIsGameOver()) {
       store.resetCurrentWords()
     }
@@ -94,7 +105,7 @@
 
   async function checkAnswer() {
     if (currentColIndex < WORD_LENGTH) return
-    const validWord = await isWordInTheList(words.value[currentRowIndex], WORD_LENGTH)
+    const validWord = await isWordInTheList(words.value[currentRowIndex], wordList)
     if (!validWord) {
       if (!alertRef.value?.isVisible) alertRef.value?.showAlert()
       return
@@ -164,9 +175,8 @@
 
   function getAnswer() {
     const currentAnswer = store.getCurrentCorrectAnswer ?? null
-    console.log('Current answer:', currentAnswer)
     if (!currentAnswer) {
-      answer.value = getRandomWord(wordList)
+      answer.value = getRandomWord(filteredWordList)
       store.setCurrentCorrectAnswer(answer.value)
       wordToGuess = mapWordLetters(answer.value)
     } else {

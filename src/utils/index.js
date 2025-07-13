@@ -13,8 +13,12 @@ export async function fetchWordList(WORD_LENGTH = 5) {
     .filter((w) => w.length === WORD_LENGTH)
 }
 
-export async function isWordInTheList(wordArr, WORD_LENGTH = 5) {
-  const wordList = await fetchWordList(WORD_LENGTH)
+export function filterWordList(wordList) {
+  const store = userDataStore()
+  return wordList.filter((word) => !store.getCorrectAnswers.includes(word.toUpperCase()))
+}
+
+export async function isWordInTheList(wordArr, wordList = []) {
   const word = wordArr
     .map((i) => i.letter)
     .join('')
