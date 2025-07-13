@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col min-h-screen overflow-x-hidden">
+    <Alert ref="alertRef" />
     <Dialog :visible="isDialogVisible" :is-correct="isCorrect" :word="answer" @close="closeDialog" @new-word="getNewWord" />
     <main class="flex flex-row flex-wrap items-center justify-center flex-grow w-screen h-full gap-3 py-8 sm:gap-5 lg:gap-10 md:py-16">
       <div class="flex flex-col items-center gap-5 lg:gap-14">
@@ -41,9 +42,10 @@
 <script setup>
   import Footer from './components/Footer.vue'
   import Dialog from './components/Dialog.vue'
+  import Alert from './components/Alert.vue'
   import Keyboard from './components/Keyboard.vue'
   import { userDataStore } from './stores/user_data'
-  import { fetchWordList, getRandomWord, buildBoard, mapWordLetters, hasEmptyCells, pastGameIsGameOver } from './utils'
+  import { fetchWordList, getRandomWord, buildBoard, mapWordLetters, hasEmptyCells, pastGameIsGameOver, isWordInTheList } from './utils'
   import { onBeforeUnmount, onMounted, ref } from 'vue'
 
   const NO_OF_TRIES = 6
@@ -51,6 +53,7 @@
   const words = ref([])
   const answer = ref('')
   const isDialogVisible = ref(false)
+  const alertRef = ref(null)
   const store = userDataStore()
   let wordToGuess = []
   let currentRowIndex = 0
@@ -89,8 +92,14 @@
     store.setCurrentWords(words.value)
   }
 
-  function checkAnswer() {
+  async function checkAnswer() {
     if (currentColIndex < WORD_LENGTH) return
+    const validWord = await isWordInTheList(words.value[currentRowIndex], WORD_LENGTH)
+    if (!validWord) {
+      console.log(alertRef.value?.isVisible)
+      if (!alertRef.value?.isVisible) alertRef.value?.showAlert()
+      return
+    }
     words.value[currentRowIndex].forEach((col, index) => {
       if (col.letter === wordToGuess[index]) {
         col.status = 'correct'

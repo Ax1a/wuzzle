@@ -1,5 +1,4 @@
 import { userDataStore } from '../stores/user_data'
-let wordListTemp = []
 
 /*
  * Credits to the original author for the word list.
@@ -8,11 +7,20 @@ let wordListTemp = []
 export async function fetchWordList(WORD_LENGTH = 5) {
   const res = await fetch('/word_list.txt')
   const text = await res.text()
-  wordListTemp = text
+  return text
     .split('\n')
     .map((w) => w.trim())
     .filter((w) => w.length === WORD_LENGTH)
-  return wordListTemp
+}
+
+export async function isWordInTheList(wordArr, WORD_LENGTH = 5) {
+  const wordList = await fetchWordList(WORD_LENGTH)
+  const word = wordArr
+    .map((i) => i.letter)
+    .join('')
+    .toLowerCase()
+  console.log(wordList.includes(word))
+  return wordList.includes(word)
 }
 
 export function getRandomWord(wordList) {
