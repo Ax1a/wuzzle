@@ -19,7 +19,6 @@ export async function isWordInTheList(wordArr, WORD_LENGTH = 5) {
     .map((i) => i.letter)
     .join('')
     .toLowerCase()
-  console.log(wordList.includes(word))
   return wordList.includes(word)
 }
 

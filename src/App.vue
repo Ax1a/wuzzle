@@ -96,7 +96,6 @@
     if (currentColIndex < WORD_LENGTH) return
     const validWord = await isWordInTheList(words.value[currentRowIndex], WORD_LENGTH)
     if (!validWord) {
-      console.log(alertRef.value?.isVisible)
       if (!alertRef.value?.isVisible) alertRef.value?.showAlert()
       return
     }
@@ -165,6 +164,7 @@
 
   function getAnswer() {
     const currentAnswer = store.getCurrentCorrectAnswer ?? null
+    console.log('Current answer:', currentAnswer)
     if (!currentAnswer) {
       answer.value = getRandomWord(wordList)
       store.setCurrentCorrectAnswer(answer.value)

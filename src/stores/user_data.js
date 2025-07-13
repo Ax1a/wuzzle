@@ -6,9 +6,9 @@ export const userDataStore = defineStore('userData', {
     getCorrectAnswers: (state) => state.correctAnswers,
     getCurrentWords: (state) => state.currentWords,
     getCurrentCorrectAnswer: (state) => {
-      if (!state.encodedAnswer) return null
+      if (!state.currentCorrectAnswer) return null
       try {
-        return atob(state.encodedAnswer)
+        return atob(state.currentCorrectAnswer)
       } catch (e) {
         return null
       }
